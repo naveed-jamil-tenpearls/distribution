@@ -3,7 +3,6 @@ package registry
 import (
 	"reflect"
 	"testing"
-
 	"github.com/docker/distribution/configuration"
 )
 
