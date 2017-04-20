@@ -31,6 +31,7 @@ import (
 	storagedriver "github.com/docker/distribution/registry/storage/driver"
 	"github.com/docker/distribution/registry/storage/driver/base"
 	"github.com/docker/distribution/registry/storage/driver/factory"
+	"github.com/docker/distribution"
 )
 
 const driverName = "s3goamz"
@@ -262,6 +263,10 @@ func New(params DriverParameters) (*Driver, error) {
 				}),
 			),
 		}
+	}
+	// Under FIPs mode must use v4 auth.
+	if(distribution.FIPSEnabled) {
+		params.V4Auth = true
 	}
 
 	if params.V4Auth {
