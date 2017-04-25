@@ -1,8 +1,8 @@
-# Pony-up!
+r# Pony-up!
 machine:
   pre:
   # Install gvm
-    - bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/1.0.22/binscripts/gvm-installer)
+    - bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/1.0.22/  binscripts/gvm-installer)
   # Install codecov for coverage
     - pip install --user codecov
 

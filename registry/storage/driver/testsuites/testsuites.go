@@ -2,7 +2,6 @@ package testsuites
 
 import (
 	"bytes"
-	"crypto/sha1"
 	"io"
 	"io/ioutil"
 	"math/rand"
@@ -19,6 +18,7 @@ import (
 
 	"github.com/docker/distribution/context"
 	storagedriver "github.com/docker/distribution/registry/storage/driver"
+	"crypto/sha256"
 )
 
 // Test hooks up gocheck into the "go test" runner.
@@ -279,7 +279,7 @@ func (suite *DriverSuite) TestWriteReadLargeStreams(c *check.C) {
 	filename := randomPath(32)
 	defer suite.deletePath(c, firstPart(filename))
 
-	checksum := sha1.New()
+	checksum := sha256.New()
 	var fileSize int64 = 5 * 1024 * 1024 * 1024
 
 	contents := newRandReader(fileSize)
@@ -299,7 +299,7 @@ func (suite *DriverSuite) TestWriteReadLargeStreams(c *check.C) {
 	c.Assert(err, check.IsNil)
 	defer reader.Close()
 
-	writtenChecksum := sha1.New()
+	writtenChecksum := sha256.New()
 	io.Copy(writtenChecksum, reader)
 
 	c.Assert(writtenChecksum.Sum(nil), check.DeepEquals, checksum.Sum(nil))

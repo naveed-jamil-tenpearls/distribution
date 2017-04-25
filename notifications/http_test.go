@@ -10,10 +10,10 @@ import (
 	"net/http/httptest"
 	"reflect"
 	"strconv"
-	"strings"
 	"testing"
 
 	"github.com/docker/distribution/manifest/schema1"
+	"strings"
 )
 
 // TestHTTPSink mocks out an http endpoint and notifies it under a couple of
@@ -61,16 +61,17 @@ func TestHTTPSink(t *testing.T) {
 
 		w.WriteHeader(status)
 	})
+	fmt.Println("0")
 	server := httptest.NewTLSServer(serverHandler)
-
 	metrics := newSafeMetrics()
 	sink := newHTTPSink(server.URL, 0, nil, nil,
 		&endpointMetricsHTTPStatusListener{safeMetrics: metrics})
 
+
 	// first make sure that the default transport gives x509 untrusted cert error
 	events := []Event{}
 	err := sink.Write(events...)
-	if !strings.Contains(err.Error(), "x509") {
+	if !strings.Contains(err.Error(), "x509") && !strings.Contains(err.Error(), "OpenSSL error")   {
 		t.Fatal("TLS server with default transport should give unknown CA error")
 	}
 	if err := sink.Close(); err != nil {
